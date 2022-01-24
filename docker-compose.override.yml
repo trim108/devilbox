@@ -1,0 +1,24 @@
+# We're using version 3.7 of the Docker Compose file format
+version: "2.3"
+
+# Define services/containers
+services:
+
+  # phpMyAdmin container
+  phpmyadmin:
+    # Use phpmyadmin/phpmyadmin:5.0.2 image
+    image: phpmyadmin/phpmyadmin
+    # Connect to "my-network" network, as defined below
+    networks:
+      - app_net
+    # Map port 8080 on the host to port 80 inside the container
+    # Syntax is: "HOST_PORT:CONTAINER_PORT"
+    ports:
+      - "8080:80"
+    # Pass a list of environment variables to the container
+    environment:
+      PMA_HOST: mysql
+    # Wait for "mysql" container to start first
+    depends_on:
+      - mysql
+    # to run witn root user: GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'password';
