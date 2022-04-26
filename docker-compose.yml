@@ -82,9 +82,9 @@ services:
       - 127.0.0.1
 
     # MacOS and Windows have this by default, this hack also allows it for Linux
-    extra_hosts:
-      docker.for.lin.host.internal: 172.16.238.1
-      docker.for.lin.localhost: 172.16.238.1
+    # extra_hosts:
+    #   - docker.for.lin.host.internal=172.16.238.1
+    #   - docker.for.lin.localhost=172.16.238.1
 
     networks:
       app_net:
@@ -158,9 +158,9 @@ services:
       - 172.16.238.100
 
     # MacOS and Windows have this by default, this hack also allows it for Linux
-    extra_hosts:
-      docker.for.lin.host.internal: 172.16.238.1
-      docker.for.lin.localhost: 172.16.238.1
+    # extra_hosts:
+    #   - docker.for.lin.host.internal = 172.16.238.1
+    #   - docker.for.lin.localhost = 172.16.238.1
 
     networks:
       app_net:
@@ -344,6 +344,8 @@ services:
       - ${DEVILBOX_PATH}/.devilbox/cfg/mysql.cnf:/etc/mysql/conf.d/devilbox.cnf:ro${MOUNT_OPTIONS}
       - ${DEVILBOX_PATH}/cfg/${MYSQL_SERVER}:/etc/mysql/docker-default.d:ro${MOUNT_OPTIONS}
 
+      - ${DEVILBOX_PATH}/backups/:/var/lib/mysql/backups:rw${MOUNT_OPTIONS}
+
       # Mount MySQL Data directory
       - devilbox-${MYSQL_SERVER}:/var/lib/mysql:rw${MOUNT_OPTIONS}
 
@@ -359,6 +361,14 @@ services:
 ################################################################################
 networks:
   app_net:
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: "false"
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.238.0/24
+          gateway: 172.16.238.1
 
 
 ################################################################################
