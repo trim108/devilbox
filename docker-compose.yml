@@ -354,7 +354,24 @@ services:
       - php
       - httpd
 
-
+  # phpMyAdmin container
+  phpmyadmin:
+    # Use phpmyadmin/phpmyadmin:5.0.2 image
+    image: phpmyadmin/phpmyadmin
+    # Connect to "my-network" network, as defined below
+    networks:
+      - app_net
+    # Map port 8080 on the host to port 80 inside the container
+    # Syntax is: "HOST_PORT:CONTAINER_PORT"
+    ports:
+      - "8080:80"
+    # Pass a list of environment variables to the container
+    environment:
+      PMA_HOST: mysql
+    # Wait for "mysql" container to start first
+    depends_on:
+      - mysql
+    # to use witnout pass run shell-mysql.sh and execute: GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '';
 
 ################################################################################
 # NETWORK
